@@ -1,11 +1,13 @@
 import Vue from 'vue'
-import App from './App.vue'
 import router from './router'
 import store from './store'
+import App from './App.vue'
 
-Vue.config.productionTip = false
+import 'common/scss/index.scss';
+Vue.config.productionTip = false;
 
 new Vue({
+  el: "body",
   router,
   store,
   render: h => h(App)
