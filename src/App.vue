@@ -26,7 +26,6 @@
       _getSeller() {
         API.seller.getSeller().then(res => {
           this.seller = res.data.data;
-          console.log(this.seller)
         })
       }
     },

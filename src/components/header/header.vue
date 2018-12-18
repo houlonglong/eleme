@@ -12,18 +12,35 @@
         <div class="description">
           {{ seller.description }}/{{seller.deliveryTime}}分钟送达
         </div>
-        <div v-if="seller.supports" class="support">
+        <div v-if="seller.supports"
+        class="support">
           <span class="icon" :class="classMap[seller.supports[0].type]" >{</span>
           <span class="text">{{ seller.supports[0].description }}</span>
         </div>
       </div>
-      <div v-if="seller.supports" class="support-count">
+      <div v-if="seller.supports" class="support-count"   @click="showDetail">
         <span class="count"> {{ seller.supports.length }}个</span>
         <i class="fa fa-chevron-right"></i>
       </div>
  
     </div>
-    <div class="bulletin-wrapper">
+    <div class="bulletin-wrapper" @click="showDetail">
+       <span class="title"></span>
+       <span class="bulletin-text">{{ seller.bulletin }}</span>
+       <i class="fa fa-chevron-right"></i>
+    </div>
+    <div class="background">
+      <img :src="seller.avatar" alt="" width="100%" height="100%">
+    </div>
+    <div class="detail" v-show="detailShow">
+      <div class="detail-wrap clearfix">
+        <div class="detail-main">
+          <p>的撒多撒的萨达撒撒旦sa的萨达的萨达 的萨达撒的撒撒旦撒撒旦撒打</p>
+        </div>
+      </div>
+      <div class="detail-close">
+        <i class="fa fa-times"  aria-hidden="true"></i>
+      </div>
     </div>
   </div>
 </template>
@@ -32,7 +49,8 @@
   export default {
     data() {
       return {
-        classMap: ['decrease', 'discont', 'guarantee', 'invoice', 'special']
+        classMap: ['decrease', 'discont', 'guarantee', 'invoice', 'special'],
+        detailShow: false
       }
     },
     name: 'v-header',
@@ -42,6 +60,11 @@
         default: {}
       }
     },
+    methods: {
+      showDetail() {
+        this.detailShow = true;
+      }
+    }
   }
 </script>
 
@@ -50,8 +73,10 @@
 @import 'common/scss/mxin.scss';
 
   .header {
+    position: relative;
     color: #ffffff;
-    background: #999999;
+    background: rgba(7,17,27,0.5);
+    overflow: hidden;
     .content-wrapper {
       position: relative;
       padding: 24px 12px 18px 24px;
@@ -137,6 +162,72 @@
           font-size: 10px;
           margin-left: 5px;
         }
+      }
+    }
+    .bulletin-wrapper {
+      position: relative;
+      padding: 0 22px 0 12px;
+      height: 28px;
+      background: rgba(7,17,27,0.2);
+      line-height: 28px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      .title {
+        display: inline-block;
+        margin-top: 8px;
+        width: 22px;
+        height: 12px;
+        vertical-align: top;
+        @include bg-image('../../assets/img/bulletin');
+        background-size: 22px 12px;
+        background-repeat: no-repeat;
+      }
+      .bulletin-text {
+        margin: 0 4px;
+        font-size: 10px;
+        font-weight: 200;
+        vertical-align: top;
+      }
+      i {
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        font-size: 10px;
+      }
+    }
+    .background {
+      z-index: -1;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      filter: blur(10px);
+    }
+    .detail {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 3;
+      width: 100%;
+      height: 100%;
+      background: rgba(7,17,27,0.8);
+      overflow: auto;
+      .detail-wrap {
+        min-height: 100%;
+        .detail-main {
+          margin-top: 64px;
+          padding-bottom: 64px;
+        }
+      }
+      .detail-close {
+        position: relative;
+        width: 32px;
+        height: 32px;
+        margin: -64px auto 0 auto;
+        clear: both;
+        font-size: 32px;
       }
     }
   }

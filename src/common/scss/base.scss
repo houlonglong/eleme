@@ -18,3 +18,15 @@ body,html {
     }
   }
 }
+
+.clearfix {
+  display: inline-block;
+  &:afetr {
+    content: " ";
+    display: block;
+    height: 0;
+    line-height: 0;
+    clear: both;
+    visibility: hidden;
+  }
+}
