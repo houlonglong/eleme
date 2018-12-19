@@ -35,7 +35,10 @@
     <div class="detail" v-show="detailShow">
       <div class="detail-wrap clearfix">
         <div class="detail-main">
-          <p>的撒多撒的萨达撒撒旦sa的萨达的萨达 的萨达撒的撒撒旦撒撒旦撒打</p>
+          <h1 class="name">{{ seller.name }}</h1>
+          <div class="star-wrap">
+             <star :size="48" :score="seller.score"></star>
+          </div>
         </div>
       </div>
       <div class="detail-close">
@@ -46,12 +49,17 @@
 </template>
 
 <script>
+  import star from 'components/star/star';
+  
   export default {
     data() {
       return {
         classMap: ['decrease', 'discont', 'guarantee', 'invoice', 'special'],
         detailShow: false
       }
+    },
+    components: {
+      star
     },
     name: 'v-header',
     props: {
@@ -215,10 +223,22 @@
       background: rgba(7,17,27,0.8);
       overflow: auto;
       .detail-wrap {
+        width: 100%;
         min-height: 100%;
         .detail-main {
           margin-top: 64px;
           padding-bottom: 64px;
+          .name {
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 16px;
+            text-align: center;
+          }
+          .star-wrap {
+            margin-top: 18px;
+            padding: 2px 0;
+            text-align: center;
+          }
         }
       }
       .detail-close {
