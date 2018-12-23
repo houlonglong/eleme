@@ -6,7 +6,10 @@
       <router-link tag="div" :to="{path: '/ratings'}" class="tab-item">评价</router-link>
       <router-link tag="div" :to="{path: '/seller'}" class="tab-item">商家</router-link>
     </div>
-    <router-view></router-view>
+       <keep-alive>
+          <router-view></router-view>
+       </keep-alive>
+   
   </div>
 </template>
 
@@ -16,7 +19,8 @@
   export default {
     data() {
       return {
-        seller: {}
+        seller: {},
+   
       }
     },
     created() {
@@ -24,7 +28,7 @@
     },
     methods: {
       _getSeller() {
-        API.seller.getSeller().then(res => {
+        API.shop.getSeller().then(res => {
           this.seller = res.data.data;
         })
       }

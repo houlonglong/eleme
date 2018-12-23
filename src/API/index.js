@@ -1,5 +1,4 @@
-import seller from './shop'
-
+import shop  from './shop'
 export default {
-  seller
+  shop
 }

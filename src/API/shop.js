@@ -6,7 +6,14 @@ function getSeller() {
   return axios.get('/seller');
 }
 
-export default {
-  getSeller
+function getGoods() {
+  return axios.get('/goods');
 }
+
+export default {
+  getSeller,
+  getGoods
+
+}
+ 
   
