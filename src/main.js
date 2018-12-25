@@ -9,7 +9,7 @@ Vue.config.productionTip = false;
 
 
 new Vue({
-  el: "body",
+
   router,
   store,
   render: h => h(App)
