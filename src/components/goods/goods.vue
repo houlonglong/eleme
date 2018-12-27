@@ -5,7 +5,8 @@
         <ul>
           <li v-for="(item,index) in goods" :key=index class="menu-item"
           :class="{'current': currenIndex === index}"
-          @click="selectMenu(index, $event)">
+          @click="selectMenu(index, $event)"
+          ref="menuList">
             <span class="text border-1px">
               <span v-show="item.type>0" class="icon" :class="classMap[item.type]"></span>
               {{ item.name }}
@@ -41,15 +42,16 @@
         </ul>
       </div>
     </section>
+    <shop-cart></shop-cart>
   </div>
 </template>
 
 <script>
 import BScroll from 'better-scroll';
+import shopCart from '../shopCart/shopCart';
+import API     from '../../API/';
 
 const ERR_OK = 0;
-
-import API from '../../API/';
 
 export default {
   data() {
@@ -59,6 +61,9 @@ export default {
       listHeight: [],
       scrollY: 0,
     }
+  },
+  components: {
+    shopCart
   },
   created() {
     API.shop.getGoods().then(res => {
@@ -77,6 +82,7 @@ export default {
         let height1 = this.listHeight[i];
         let height2 = this.listHeight[i + 1];
         if (!height2 || (this.scrollY >= height1 && this.scrollY < height2)) {
+          this.__followScroll(i)
           return i;
         }
       }
@@ -114,7 +120,13 @@ export default {
         let el = foodList[index];
         this.foodsScroll.scrollToElement(el, 200)
       }
-    }
+    },
+    __followScroll(index) {
+        let menuList = this.$refs.menuList;
+        let el = menuList[index];
+        this.meunScroll.scrollToElement(el, 300, 0, -100);
+      }
+    
   }
 }
 </script>
