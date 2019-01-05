@@ -7,7 +7,7 @@
       <router-link tag="div" :to="{path: '/seller'}" class="tab-item">商家</router-link>
     </div>
        <keep-alive>
-          <router-view></router-view>
+          <router-view :seller="seller"></router-view>
        </keep-alive>
    
   </div>

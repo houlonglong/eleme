@@ -35,6 +35,9 @@
                       <span class="now">￥{{ item.price }} </span>
                       <span class="old" v-show="item.oldPrice">￥ {{ item.oldPrice }}</span>
                     </div>
+                    <div class="cartcontrol-wrapper">
+                      <cartcontrol :food="item"></cartcontrol>
+                    </div>
                 </div>
               </li>
             </ul>
@@ -42,18 +45,26 @@
         </ul>
       </div>
     </section>
-    <shop-cart></shop-cart>
+    <shop-cart :delivery-price="seller.deliveryPrice"
+    :min-price="seller.minPrice" :select-foods="selcectFoods"></shop-cart>
   </div>
 </template>
 
 <script>
 import BScroll from 'better-scroll';
 import shopCart from '../shopCart/shopCart';
+import cartcontrol from '../cartcontrol/cartcontrol';
+
 import API     from '../../API/';
 
 const ERR_OK = 0;
 
 export default {
+  props: {
+    seller: {
+      type: Object
+    }
+  },
   data() {
     return {
       goods: [],
@@ -63,6 +74,7 @@ export default {
     }
   },
   components: {
+    cartcontrol,
     shopCart
   },
   created() {
@@ -87,6 +99,19 @@ export default {
         }
       }
        return 0;
+    },
+    selcectFoods() {
+      let foods = [];
+      this.goods.forEach((goods) => {
+        console.log(goods,1)
+        goods.foods.forEach((food) => {
+          if (food.count) {
+            foods.push(food);
+          }
+        })
+      });
+      console.log(foods)
+      return foods;
     }
   },
   methods: {
@@ -95,7 +120,8 @@ export default {
         click: true
       });
      
-     this.foodsScroll = new BScroll(this.$refs.foodsWrapper, { 
+     this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {
+      click: true,
       probeType: 3
      });
      this.foodsScroll.on('scroll', (pos) => {
@@ -256,6 +282,11 @@ export default {
               font-size: 10px;
               color: rgb(147, 153, 159);
             }
+          }
+          .cartcontrol-wrapper {
+            position: absolute;
+            right: 0;
+            bottom: 5px;
           }
         }
       }
