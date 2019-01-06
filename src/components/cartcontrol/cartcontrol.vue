@@ -19,9 +19,6 @@ export default {
       type: Object,
     }
   },
-  created() {
-    console.log(this.food)
-  },
   methods: {
     addCart(event,) {
       if(!event._constructed) {
@@ -30,13 +27,18 @@ export default {
         Vue.set(this.food, 'count', 1)
       } else {
          this.food.count ++;
-      }
+      };
+      this.$emit('add', event.target);
     },
     decrease(evnet) {
       if(!event._constructed) {
         return 
       } else {
-         this.food.count --;
+        if(this.food.count <= 0) {
+          this.food.count = 0;
+        } else {
+           this.food.count--
+        }
       }
     }
   }

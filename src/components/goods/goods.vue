@@ -36,7 +36,9 @@
                       <span class="old" v-show="item.oldPrice">￥ {{ item.oldPrice }}</span>
                     </div>
                     <div class="cartcontrol-wrapper">
-                      <cartcontrol :food="item"></cartcontrol>
+                      <cartcontrol
+                      @add="addFood"
+                      :food="item"></cartcontrol>
                     </div>
                 </div>
               </li>
@@ -45,7 +47,9 @@
         </ul>
       </div>
     </section>
-    <shop-cart :delivery-price="seller.deliveryPrice"
+    <shop-cart
+    ref="shopcart"
+    :delivery-price="seller.deliveryPrice"
     :min-price="seller.minPrice" :select-foods="selcectFoods"></shop-cart>
   </div>
 </template>
@@ -103,14 +107,12 @@ export default {
     selcectFoods() {
       let foods = [];
       this.goods.forEach((goods) => {
-        console.log(goods,1)
         goods.foods.forEach((food) => {
           if (food.count) {
             foods.push(food);
           }
         })
       });
-      console.log(foods)
       return foods;
     }
   },
@@ -146,6 +148,17 @@ export default {
         let el = foodList[index];
         this.foodsScroll.scrollToElement(el, 200)
       }
+    },
+    _drop(target) {
+      // 体验优化,异步执行下落动画
+      this.$nextTick(() => {
+        this.$refs.shopcart.drop(target);
+      });
+    },
+    addFood(target) {
+      this.$nextTick(() => {
+        this._drop(target);
+      })
     },
     __followScroll(index) {
         let menuList = this.$refs.menuList;
