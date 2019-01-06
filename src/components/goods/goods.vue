@@ -165,7 +165,6 @@ export default {
         let el = menuList[index];
         this.meunScroll.scrollToElement(el, 300, 0, -100);
       }
-    
   }
 }
 </script>
