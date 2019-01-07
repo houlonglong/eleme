@@ -1,7 +1,13 @@
 <template>
-  <div class="food" v-show="showFla4g"> 
-
-  </div>
+  <transition name="move">
+    <div class="food" v-show="showFlag"> 
+      <div class="content">
+        <div class="image-header">
+          <img :src="food.image">
+        </div>
+      </div>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -9,6 +15,16 @@
     props: {
       food: {
         type: Object
+      }
+    },
+    data() {
+      return {
+        showFlag: false
+      }
+    },
+    methods: {
+      show() {
+        this.showFlag = true;
       }
     }
   }
@@ -23,5 +39,12 @@
     bottom: 48px;
     width: 100%;
     background: #fff;
+    transform: translate3d(0, 0, 0);
+    &.move-enter-active, &.move-leave-active {
+      transition: all 0.2s linear
+      }
+    &.move-enter, &.move-leave-active {
+      transform: translate3d(100%, 0, 0)
+    }
   }
 </style>

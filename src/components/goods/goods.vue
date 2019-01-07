@@ -19,7 +19,7 @@
           <li v-for="(item, index) in goods" :key=index class="food-list food-list-hook">
             <h1 class="title">{{ item.name }}</h1>
             <ul>
-              <li @click="selectedFood(item,$event)" v-for="(item, index) in item.foods" :key=index class="food-item border-1px">
+              <li @click="selectFood(item,$event)" v-for="(item, index) in item.foods" :key=index class="food-item border-1px">
                 <div class="icon">
                   <img width="57" height="57" :src="item.icon" alt="">
                 </div>
@@ -50,8 +50,8 @@
     <shop-cart
     ref="shopcart"
     :delivery-price="seller.deliveryPrice"
-    :min-price="seller.minPrice" :select-foods="selcectFoods"></shop-cart>
-    <food :food="selcectFood"></food>
+    :min-price="seller.minPrice" :select-foods="selectFoods"></shop-cart>
+    <food :food="selectedFood" ref="food"></food>
   </div>
 </template>
 
@@ -77,9 +77,7 @@ export default {
       classMap: ['decrease', 'discont', 'guarantee', 'invoice', 'special'],
       listHeight: [],
       scrollY: 0,
-      selcectFood: {
-
-      }
+      selectedFood: {}
     }
   },
   components: {
@@ -110,7 +108,7 @@ export default {
       }
        return 0;
     },
-    selcectFoods() {
+    selectFoods() {
       let foods = [];
       this.goods.forEach((goods) => {
         goods.foods.forEach((food) => {
@@ -175,8 +173,8 @@ export default {
       if (!event._constructed) {
         return;
       }
-    this.selectedFood = food;
-    console.log(this.selectedFood)
+      this.selectedFood = food;
+      this.$refs.food.show();
     }
   }
 }
