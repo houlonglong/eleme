@@ -19,7 +19,7 @@
           <li v-for="(item, index) in goods" :key=index class="food-list food-list-hook">
             <h1 class="title">{{ item.name }}</h1>
             <ul>
-              <li v-for="(item, index) in item.foods" :key=index class="food-item border-1px">
+              <li @click="selectedFood(item,$event)" v-for="(item, index) in item.foods" :key=index class="food-item border-1px">
                 <div class="icon">
                   <img width="57" height="57" :src="item.icon" alt="">
                 </div>
@@ -51,6 +51,7 @@
     ref="shopcart"
     :delivery-price="seller.deliveryPrice"
     :min-price="seller.minPrice" :select-foods="selcectFoods"></shop-cart>
+    <food :food="selcectFood"></food>
   </div>
 </template>
 
@@ -58,6 +59,7 @@
 import BScroll from 'better-scroll';
 import shopCart from '../shopCart/shopCart';
 import cartcontrol from '../cartcontrol/cartcontrol';
+import food from '../food/food';
 
 import API     from '../../API/';
 
@@ -75,11 +77,15 @@ export default {
       classMap: ['decrease', 'discont', 'guarantee', 'invoice', 'special'],
       listHeight: [],
       scrollY: 0,
+      selcectFood: {
+
+      }
     }
   },
   components: {
     cartcontrol,
-    shopCart
+    shopCart,
+    food
   },
   created() {
     API.shop.getGoods().then(res => {
@@ -161,10 +167,17 @@ export default {
       })
     },
     __followScroll(index) {
-        let menuList = this.$refs.menuList;
-        let el = menuList[index];
-        this.meunScroll.scrollToElement(el, 300, 0, -100);
+      let menuList = this.$refs.menuList;
+      let el = menuList[index];
+      this.meunScroll.scrollToElement(el, 300, 0, -100);
+    },
+    selectFood(food, event) {
+      if (!event._constructed) {
+        return;
       }
+    this.selectedFood = food;
+    console.log(this.selectedFood)
+    }
   }
 }
 </script>
