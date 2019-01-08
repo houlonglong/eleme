@@ -1,7 +1,7 @@
 <template>
   <transition name="move">
     <div class="food" v-show="showFlag" ref="food"> 
-      <div class="content">
+      <div class="food-content">
         <div class="image-header">
           <img :src="food.image">
           <div class="back" @click="hide">
@@ -22,8 +22,12 @@
           </div>
         </div>
         <div class="cartcontrol-wrapper">
-          <cartcontrol :food="food"></cartcontrol>
+          <cartcontrol @add="addFood" :food="food"  ></cartcontrol>
         </div>
+        <transition name="fade">
+          <div class="buy"  v-show="!food.count || food.count===0"
+          @click.stop.prevent="addFirst">加入购物车</div>
+        </transition>
       </div>
     </div>
   </transition>
@@ -31,6 +35,7 @@
 
 <script>
 import BScroll from 'better-scroll';
+import Vue from 'vue';
 import cartcontrol from '../cartcontrol/cartcontrol'
 export default {
   props: {
@@ -55,11 +60,23 @@ export default {
           this.scroll = new BScroll($food, {
             click: true
           })
+        } else {
+          this.scroll.refresh();
         }
       })
     },
     hide() {
         this.showFlag = false;
+    },
+    addFood(target) {
+        this.$emit('add', target);
+    },
+    addFirst(event) {
+      if (!event._constructed) {
+        return
+      } 
+      Vue.set(this.food,'count', 1)
+      this.$emit('add', event.target);
     }
   }
 }
@@ -106,6 +123,8 @@ export default {
       }
     }
     .content {
+      position: relative;
+      padding: 18px;
       .title {
         line-height: 14px;
         margin-bottom: 8px;
@@ -140,5 +159,33 @@ export default {
         }
       }
     }
+    .cartcontrol-wrapper {
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+    }
+      .buy {
+        position: absolute;
+        right: 18px;
+        bottom: 18px;
+        z-index: 10;
+        height: 24px;
+        line-height: 24px;
+        padding: 0 12px;
+        box-sizing: border-box;
+        border-radius: 12px;
+        font-size: 10px;
+        color: #fff;
+        background: rgb(0, 160, 220);
+        opacity: 1
+      }
+      &.fade-enter-active, &.fade-leave-active{
+         transition: all 0.2s
+      }
+      &.fade-enter, &.fade-leave-active {
+        opacity: 0;
+        z-index: -1
+      }
+          
   }
 </style>
