@@ -11,7 +11,7 @@
           <div class="num" v-show="totalCount > 0">{{totalCount}}</div>
       </div>
       <div class="price" :class="{'highlight' : totalCount > 0}">
-            ￥ {{totalPrice}}
+       ￥ {{totalPrice}}
           </div>
           <div class="desc">另需配送费￥{{deliveryPrice}}元</div>
         </div>

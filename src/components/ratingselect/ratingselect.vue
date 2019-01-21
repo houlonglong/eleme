@@ -1,13 +1,25 @@
 <template>
   <div class="raringselect">
     <div class="rating-type border-1px">
-      <span>{{desc.all}}</span>
-      <span>{{desc.positive}}</span>
-      <span>{{desc.negative}}</span>
+      <span class="block positive"
+      :class="{'active': selectType === 2 }"
+      @click="select(2, $event)">{{desc.all}}
+        <span class="count">{{ ratings.length }}</span>
+      </span>
+      <span class="block positive"
+       :class="{'active': selectType === 0 }"
+       @click="select(0, $event)">{{desc.positive}}
+        <span class="count">{{ positive.length }}</span>
+      </span>
+      <span class="block negative"
+       :class="{'active': selectType === 1 }"
+       @click="select(1, $event)">{{desc.negative}}
+        <span class="count">{{ negative.length}}</span>
+      </span>
     </div>
-    <div class="switch">
+    <div @click="toggle($event)" class="switch" :class="{'on':onlyContent}">{{this.onlyContent}}
       <i class="fa fa-check-circle" aria-hidden="true"></i>
-      <span>只有内容的评价</span>
+      <span>只看内容的评价</span>
     </div>
   </div>
 </template>
@@ -18,7 +30,7 @@ const NEGATIVE = 1;
 const ALL = 2;
 export default {
   props: {
-    rating: {
+    ratings: {
       type: Array,
       default() {
         return []
@@ -42,6 +54,32 @@ export default {
         }
       }
     }
+  },
+  computed:{
+    positive() {
+      return this.ratings.filter((rating) => {
+        return rating.rateType === POSITIVE;
+      })
+    },
+    negative() {
+      return this.ratings.filter((rating) => {
+        return rating.rateType === NEGATIVE;
+      })
+    }
+  },
+  methods: {
+    select(type, event) {
+      if (!event._constructed) {
+        return;
+      }
+      this.$emit('select', type);
+    },
+    toggle(event) {
+      if (!event._constructed) {
+        return;
+      }
+      this.$emit('toogle', !this.onlyContent);
+    }
   }
 }
 </script>
@@ -53,6 +91,58 @@ export default {
     padding: 18px 0;
     margin: 0 18px;
     @include border-1px(rgba(7,17,27,0.1));
+    font-size: 0;
+    .block {
+      display: inline-block;
+      padding: 8px 12px;
+      margin-right: 8px;
+      border-radius: 1px;
+      color: rbg(77, 85, 93);
+      font-size: 12px;
+      line-height: 16px;
+      &.active {
+        color: #ffffff;
+      }
+      .count {
+        margin-left: 2px;
+        font-size: 8px;
+      }
+      &.positive {
+        background: rgba(0,160,220,0.2);
+        &.active {
+          background: rgb(0,160,220);
+        }
+      }
+      &.negative {
+        background: rgba(77,85,93,0.2);
+        &.active {
+          background: rgb(77,85,93);
+        }
+      }
+    }
+  }
+  .switch {
+    margin-left: 18px;
+    margin-right: 18px;
+    padding: 12px 0;
+    line-height: 24px;
+    color: rgb(147,153,153);
+    font-size: 0;
+    border-bottom: 1px solid rgba(7, 17,27, 0.1);
+    &.on {
+      color: rgb(18, 182, 105);
+    }
+    i {
+      display: inline-block;
+      vertical-align: top;
+      margin-right: 10px;
+      font-size: 24px;
+    }
+    span {
+      display: inline-block;
+      vertical-align: top;
+      font-size: 12px;
+    }
   }
 }
 </style>
