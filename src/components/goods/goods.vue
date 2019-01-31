@@ -61,7 +61,7 @@ import shopCart from '../shopCart/shopCart';
 import cartcontrol from '../cartcontrol/cartcontrol';
 import food from '../food/food';
 
-import API     from '../../API/';
+import API from '../../API/';
 
 const ERR_OK = 0;
 
@@ -71,105 +71,103 @@ export default {
       type: Object
     }
   },
-  data() {
+  data () {
     return {
       goods: [],
       classMap: ['decrease', 'discont', 'guarantee', 'invoice', 'special'],
       listHeight: [],
       scrollY: 0,
       selectedFood: {}
-    }
+    };
   },
   components: {
     cartcontrol,
     shopCart,
     food
   },
-  created() {
+  created () {
     API.shop.getGoods().then(res => {
       this.goods = res.data.data;
-    
       this.$nextTick(() => {
-        this.__initScorll()
+        this.__initScorll();
         this.__calulateHeight();
-      })
-    })
-   
-  },  
+      });
+    });
+  },
   computed: {
-    currenIndex() {
+    currenIndex () {
       for (let i = 0; i < this.listHeight.length; i++) {
         let height1 = this.listHeight[i];
         let height2 = this.listHeight[i + 1];
         if (!height2 || (this.scrollY >= height1 && this.scrollY < height2)) {
-          this.__followScroll(i)
+          this.__followScroll(i);
           return i;
         }
       }
-       return 0;
+      return 0;
     },
-    selectFoods() {
+    selectFoods () {
       let foods = [];
       this.goods.forEach((goods) => {
         goods.foods.forEach((food) => {
           if (food.count) {
             foods.push(food);
           }
-        })
+        });
       });
       return foods;
     }
   },
   methods: {
-    __initScorll() {
+    __initScorll () {
       this.meunScroll = new BScroll(this.$refs.menuWrapper, {
         click: true
       });
-     
-     this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {
-      click: true,
-      probeType: 3
-     });
-     this.foodsScroll.on('scroll', (pos) => {
-      if(pos.y < 0) {
-        this.scrollY = Math.abs(Math.round(pos.y));
-      } 
-     })
+
+      this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {
+        click: true,
+        probeType: 3
+      });
+      this.foodsScroll.on('scroll', (pos) => {
+        if (pos.y < 0) {
+          this.scrollY = Math.abs(Math.round(pos.y));
+        }
+      });
     },
-    __calulateHeight() {
+    __calulateHeight () {
       let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook');
-      let height = 0 ;
+      let height = 0;
       this.listHeight.push(0);
 
       Array.from(foodList).forEach(element => {
-        height+= element.clientHeight;
-        this.listHeight.push(height)
+        height += element.clientHeight;
+        this.listHeight.push(height);
       });
     },
-    selectMenu(index,event) {
-      if(event._constructed) {
+    selectMenu (index, event) {
+      if (event._constructed) {
         let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook');
         let el = foodList[index];
-        this.foodsScroll.scrollToElement(el, 200)
+        this.foodsScroll.scrollToElement(el, 200);
       }
     },
-    _drop(target) {
+    _drop (target) {
       // 体验优化,异步执行下落动画
       this.$nextTick(() => {
         this.$refs.shopcart.drop(target);
       });
     },
-    addFood(target) {
+    addFood (target) {
       this.$nextTick(() => {
         this._drop(target);
-      })
+      });
     },
-    __followScroll(index) {
+    __followScroll (index) {
       let menuList = this.$refs.menuList;
       let el = menuList[index];
       this.meunScroll.scrollToElement(el, 300, 0, -100);
     },
-    selectFood(food, event) {
+    selectFood (food, event) {
       if (!event._constructed) {
         return;
       }
@@ -177,7 +175,7 @@ export default {
       this.$refs.food.show();
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -286,7 +284,7 @@ export default {
             margin-bottom: 8px;
             line-height: 14px;
           }
-          
+
           .extra {
             .count {
               margin-right: 12px;
