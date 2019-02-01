@@ -1,6 +1,6 @@
 <template>
   <transition name="move">
-    <div class="food" v-show="showFlag" ref="food"> 
+    <div class="food" v-show="showFlag" ref="food">
       <div class="food-content">
         <div class="image-header">
           <img :src="food.image">
@@ -12,7 +12,7 @@
           <h1 class="title">{{ food.name }}</h1>
           <div class="detail">
             <span class="sell-count">
-              月售 {{ food.sellCount }} 
+              月售 {{ food.sellCount }}
             </span>
             <span class="rating">好评率{{ food.rating }}%</span>
           </div>
@@ -85,7 +85,7 @@ import cartcontrol from '../cartcontrol/cartcontrol';
 import split from '../split/split';
 import ratingselect from '../ratingselect/ratingselect';
 
-const POSITIVE = 0; 
+const POSITIVE = 0;
 const NEGATIVE = 1;
 const ALL = 2;
 export default {
@@ -94,7 +94,7 @@ export default {
       type: Object
     }
   },
-  data() {
+  data () {
     return {
       showFlag: false,
       selectType: POSITIVE,
@@ -104,7 +104,7 @@ export default {
         positive: '满意',
         negative: '吐槽'
       }
-    }
+    };
   },
   components: {
     cartcontrol,
@@ -112,52 +112,51 @@ export default {
     ratingselect
   },
   methods: {
-    selectRating(type){
+    selectRating (type) {
       this.selectType = type;
       this.$nextTick(() => {
         this.scroll.refresh();
-      })
-      
+      });
     },
-    toggleContent(onlyContent) {
+    toggleContent (onlyContent) {
       this.onlyContent = onlyContent;
       this.$nextTick(() => {
         this.scroll.refresh();
-      })
+      });
     },
-    show() {
+    show () {
       this.showFlag = true;
       this.selectType = POSITIVE;
-      this.onlyContent = false,
+      this.onlyContent = false;
       this.$nextTick(() => {
         if (!this.scroll) {
           const $food = this.$refs.food;
           this.scroll = new BScroll($food, {
             click: true
-          })
+          });
         } else {
           this.scroll.refresh();
         }
-      })
+      });
     },
-    hide() {
-        this.showFlag = false;
+    hide () {
+      this.showFlag = false;
     },
-    addFood(target) {
-        this.$emit('add', target);
+    addFood (target) {
+      this.$emit('add', target);
     },
-    addFirst(event) {
+    addFirst (event) {
       if (!event._constructed) {
-        return
-      } 
-      Vue.set(this.food,'count', 1)
+        return;
+      }
+      Vue.set(this.food, 'count', 1);
       this.$emit('add', event.target);
     },
-    needShow(type, text) {
-      if(this.onlyContent && !text) {
+    needShow (type, text) {
+      if (this.onlyContent && !text) {
         return false;
       }
-      if(this.selectType === ALL) {
+      if (this.selectType === ALL) {
         return true;
       } else {
         return type === this.selectType;
@@ -165,12 +164,12 @@ export default {
     }
   },
   filters: {
-    formatDate(time) {
+    formatDate (time) {
       let data = new Date(time);
-      return formatDate(data,'yyyy-MM-dd hh:mm')
+      return formatDate(data, 'yyyy-MM-dd hh:mm');
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
