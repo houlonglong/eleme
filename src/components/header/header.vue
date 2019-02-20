@@ -22,7 +22,7 @@
         <span class="count"> {{ seller.supports.length }}个</span>
         <i class="fa fa-chevron-right"></i>
       </div>
- 
+
     </div>
     <div class="bulletin-wrapper" @click="showDetail">
        <span class="title"></span>
@@ -71,35 +71,35 @@
 </template>
 
 <script>
-  import star from 'components/star/star';
-  
-  export default {
-    data() {
-      return {
-        classMap: ['decrease', 'discont', 'guarantee', 'invoice', 'special'],
-        detailShow: false
-      }
-    },
-    components: {
-      star
-    },
-    name: 'v-header',
-    props: {
-      seller: {
-        type: Object,
-        default: {}
-      }
-    },
-    methods: {
-      showDetail() {
-        this.detailShow = true;
-      },
+import star from 'components/star/star';
 
-      hideDatail() {
-        this.detailShow = false;
-      }
+export default {
+  data () {
+    return {
+      classMap: ['decrease', 'discont', 'guarantee', 'invoice', 'special'],
+      detailShow: false
+    };
+  },
+  components: {
+    star
+  },
+  name: 'v-header',
+  props: {
+    seller: {
+      type: Object,
+      default: {}
+    }
+  },
+  methods: {
+    showDetail () {
+      this.detailShow = true;
+    },
+
+    hideDatail () {
+      this.detailShow = false;
     }
   }
+};
 </script>
 
 <style lang='scss' scoped>
@@ -114,12 +114,12 @@
     .content-wrapper {
       position: relative;
       padding: 24px 12px 18px 24px;
-      font-size: 0; 
+      font-size: 0;
       .avatar {
         display: inline-block;
         vertical-align: top;
         img {
-          border-radius: 2px; 
+          border-radius: 2px;
         }
       }
       .content {
@@ -186,7 +186,7 @@
         padding: 0 8px;
         height: 23px;
         line-height: 24px;
-        border-radius: 14px; 
+        border-radius: 14px;
         background: rgba(0,0,0,0.2);
         text-align: center;
         .count {

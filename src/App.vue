@@ -7,36 +7,42 @@
       <router-link tag="div" :to="{path: '/seller'}" class="tab-item">商家</router-link>
     </div>
        <keep-alive>
-          <router-view :seller="seller"></router-view>
+          <router-view keep-alive :seller="seller"></router-view>
        </keep-alive>
-   
+
   </div>
 </template>
 
 <script>
-  import API from './API/index'
-  import Header from './components/header/header'
-  export default {
-    data() {
-      return {
-        seller: {},
-   
+import API from './API/index';
+import Header from './components/header/header';
+import { urlParse } from 'common/js/url';
+export default {
+  data () {
+    return {
+      seller: {
+        id: (() => {
+          let queryParam = urlParse();
+          return queryParam.id;
+        })()
       }
-    },
-    created() {
-      this._getSeller();
-    },
-    methods: {
-      _getSeller() {
-        API.shop.getSeller().then(res => {
-          this.seller = res.data.data;
-        })
-      }
-    },
-    components: {
-      'v-header': Header
+
+    };
+  },
+  created () {
+    this._getSeller();
+  },
+  methods: {
+    _getSeller () {
+      API.shop.getSeller(this.seller.id).then(res => {
+        this.seller = Object.assign({}, this.seller, res.data.data);
+      });
     }
+  },
+  components: {
+    'v-header': Header
   }
+};
 </script>
 
 <style lang="scss">

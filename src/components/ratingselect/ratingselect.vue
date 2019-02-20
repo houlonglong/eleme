@@ -17,7 +17,7 @@
         <span class="count">{{ negative.length}}</span>
       </span>
     </div>
-    <div @click="toggle($event)" class="switch" :class="{'on':onlyContent}">{{this.onlyContent}}
+    <div @click="toggle($event)" class="switch" :class="{'on': onlyContent}">{{this.onlyContent}}
       <i class="fa fa-check-circle" aria-hidden="true"></i>
       <span>只看内容的评价</span>
     </div>
@@ -25,15 +25,15 @@
 </template>
 
 <script>
-const POSITIVE = 0; 
+const POSITIVE = 0;
 const NEGATIVE = 1;
 const ALL = 2;
 export default {
   props: {
     ratings: {
       type: Array,
-      default() {
-        return []
+      default () {
+        return [];
       }
     },
     selectType: {
@@ -46,42 +46,42 @@ export default {
     },
     desc: {
       type: Object,
-      default() {
+      default () {
         return {
           all: '全部',
           positive: '满意',
           negative: '不满意'
-        }
+        };
       }
     }
   },
-  computed:{
-    positive() {
+  computed: {
+    positive () {
       return this.ratings.filter((rating) => {
         return rating.rateType === POSITIVE;
-      })
+      });
     },
-    negative() {
+    negative () {
       return this.ratings.filter((rating) => {
         return rating.rateType === NEGATIVE;
-      })
+      });
     }
   },
   methods: {
-    select(type, event) {
+    select (type, event) {
       if (!event._constructed) {
         return;
       }
       this.$emit('select', type);
     },
-    toggle(event) {
+    toggle (event) {
       if (!event._constructed) {
         return;
       }
       this.$emit('toogle', !this.onlyContent);
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

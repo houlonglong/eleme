@@ -25,11 +25,10 @@
         </div>
       </div>
       <split></split>
-      <ratingselect @select="selectRating" @toggle="toggleContent" :selectType="selectType" :onlyContent="onlyContent"
-                    :ratings="ratings"></ratingselect>
+      <ratingselect @select="selectRating" @toogle="toggleContent" :selectType="selectType" :onlyContent="onlyContent" :ratings="ratings"></ratingselect>
       <div class="rating-wrapper">
         <ul>
-          <li v-for="(key,rating) in ratings" v-show="needShow(rating.rateType, rating.text)" class="rating-item"  :key="key">
+          <li v-for="(rating, key) in ratings" class="rating-item"  :key="key"  v-show=needShow(rating.type,rating.text) >
             <div class="avatar">
               <img width="28" height="28" :src="rating.avatar">
             </div>
@@ -41,8 +40,8 @@
               </div>
               <p class="text">{{rating.text}}</p>
               <div class="recommend" v-show="rating.recommend && rating.recommend.length">
-                <span class="icon-thumb_up"></span>
-                <span class="item" v-for="(key, item) in rating.recommend" :key="key">{{item}}</span>
+                <span class="fa fa-thumbs-up" aria-hidden="true"></span>
+                <span class="item" v-for="(item, key) in rating.recommend" :key="key">{{item}}</span>
               </div>
               <div class="time">
                 {{rating.rateTime | formatDate}}
@@ -61,10 +60,10 @@ import { formatDate } from 'common/js/date';
 import star from 'components/star/star';
 import ratingselect from 'components/ratingselect/ratingselect';
 import split from 'components/split/split';
+import API from '../../API/';
 
 const ALL = 2;
-const ERR_OK = 0;
-const debug = process.env.NODE_ENV !== 'production';
+// const ERR_OK = 0;
 
 export default {
   props: {
@@ -80,17 +79,13 @@ export default {
     };
   },
   created () {
-    const url = debug ? '/api/ratings' : 'http://ustbhuangyi.com/sell/api/ratings';
-    this.$http.get(url).then((response) => {
-      response = response.body;
-      if (response.errno === ERR_OK) {
-        this.ratings = response.data;
-        this.$nextTick(() => {
-          this.scroll = new BScroll(this.$refs.ratings, {
-            click: true
-          });
+    API.shop.getRatings().then(res => {
+      this.ratings = res.data.data;
+      this.$nextTick(() => {
+        this.scroll = new BScroll(this.$refs.ratings, {
+          click: true
         });
-      }
+      });
     });
   },
   methods: {
@@ -214,11 +209,14 @@ export default {
         color: rgb(147, 153, 159);
       }
     }
-    .rating-wrapper {
+
+  }
+   .rating-wrapper {
       padding: 0 18px;
       .rating-item {
         display: flex;
         padding: 18px 0;
+        @include border-1px(rgba(7,17,27,0.1));
         .avatar {
           flex: 0 0 28px;
           width: 28px;
@@ -276,18 +274,17 @@ export default {
               color: rgb(147, 153, 159);
               background: #fff;
             }
-            .time {
-              position: absolute;
-              top: 0;
-              right: 0;
-              line-height: 12px;
-              font-size: 10px;
-              color: rgb(147, 153, 159);
-            }
+          }
+          .time {
+            position: absolute;
+            top: 0;
+            right: 0;
+            line-height: 12px;
+            font-size: 10px;
+            color: rgb(147, 153, 159);
           }
         }
       }
     }
-  }
 }
 </style>
